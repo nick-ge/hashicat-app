@@ -16,7 +16,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "myresourcegroup" {
-  name     = "${var.prefix}-private"
+  name     = "${var.prefix}-workshop"
   location = var.location
 
   tags = {
@@ -200,6 +200,12 @@ resource "null_resource" "configure-cat-app" {
       host     = azurerm_public_ip.catapp-pip.fqdn
     }
   }
+}
+
+module "azure-backup" {
+  source              = "ravensorb/azure-backup/azurerm"
+  version             = "1.0.2"
+  resource_group_name = "${var.prefix}-public"
 }
 
 module "backupstorage" {
